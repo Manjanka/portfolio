@@ -89,42 +89,7 @@ function init() {
     }
     window.onload = init();
 
-/*-----------------------------------------------------------------------------------*/
-/*	SCROLL NAVIGATION HIGHLIGHT
-/*-----------------------------------------------------------------------------------*/
-jQuery(document).ready(function() {
-	headerWrapper = parseInt(jQuery('.navbar').height(), 10);
-	var shrinked_header_height = 64,
-	header_height = jQuery('.navbar').height(),
-	navItems = jQuery('.navbar ul a[href^="#"]').not('.navbar ul a[href="#"], .navbar ul a.fancybox-inline');
-	jQuery('.offset').css('padding-top', header_height + 'px');
-	jQuery('.anchor').css('padding-top', shrinked_header_height + 'px');  
-	jQuery('.anchor').css('margin-top', -(shrinked_header_height) + 'px');    
-	offsetTolerance = -(header_height);
-	//Detecting user's scroll
-	jQuery(window).scroll(function() {
-		//Check scroll position
-		scrollPosition = parseInt(jQuery(this).scrollTop(), 10);
-		//Move trough each menu and check its position with scroll position then add current class
-		navItems.each(function() {
-		var thisHref = jQuery(this).attr('href');
-		if( jQuery(thisHref).length ){
-			thisTruePosition = parseInt(jQuery(thisHref).offset().top, 10);
-			thisPosition = thisTruePosition - headerWrapper - offsetTolerance;
-			if(scrollPosition >= thisPosition) {
-				jQuery('.current').removeClass('current');
-				jQuery('.navbar ul a[href='+ thisHref +']').parent('li').addClass('current');
-			}
-		}
-		});
-		//If we're at the bottom of the page, move pointer to the last section
-		bottomPage = parseInt(jQuery(document).height(), 10) - parseInt(jQuery(window).height(), 10);
-		if(scrollPosition == bottomPage || scrollPosition >= bottomPage) {
-			jQuery('.current').removeClass('current');
-			navItems.last().parent('li').addClass('current');
-		}
-	});
-});
+
 /*-----------------------------------------------------------------------------------*/
 /*	CUBE PORTFOLIO
 /*-----------------------------------------------------------------------------------*/			
@@ -358,3 +323,17 @@ Skype.ui({
 "participants": ["masjaha1"],
 "imageSize": 24
 });
+
+// ease scroll
+	$('a[href^="#"]').bind('click.smoothscroll',function (e) {
+		e.preventDefault();
+
+		var target = this.hash,
+		$target = $(target);
+
+		$('html, body').stop().animate({
+			'scrollTop': $target.offset().top
+		}, 900, 'swing', function () {
+			window.location.hash = target;
+		});
+	});
